@@ -12,3 +12,5 @@ These 3 component
 
 For the _direction_ variable, -45 means turning 45 degrees left, 0 goes straight, +45 turns 45 degrees towards right per second.
 If you can get **your own gazetracking code** to send a float value that represents direction over via UDP to port 8051, you should be able to control the player's steering via gaze.
+
+Credit: Josh, Lam
