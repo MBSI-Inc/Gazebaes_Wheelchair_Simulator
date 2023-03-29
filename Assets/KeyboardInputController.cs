@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class KeyboardInputController : MonoBehaviour
@@ -21,16 +19,21 @@ public class KeyboardInputController : MonoBehaviour
     void Update()
     {
         float newDir = 0f;
-        if(Input.GetKey("left")){
+        if (Input.GetKey("left"))
+        {
             //newDir = Mathf.Clamp(newDir-turnRate, -45, 45);
             newDir = -turnRate;
         }
-        if(Input.GetKey("right")){
+        if (Input.GetKey("right"))
+        {
             newDir = turnRate;
         }
-        if(Input.GetKey("up")){
-            sc.moveSpeed = defaultMoveSpeed*2;
-        }else{
+        if (Input.GetKey("up"))
+        {
+            sc.moveSpeed = defaultMoveSpeed * 2;
+        }
+        else
+        {
             sc.moveSpeed = defaultMoveSpeed;
         }
         sc.SetDirection(newDir);

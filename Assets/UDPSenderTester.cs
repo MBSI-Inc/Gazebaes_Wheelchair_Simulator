@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System.Net.Sockets;
 using System.Net;
@@ -7,17 +5,12 @@ using System.Text;
 using System;
 
 
+// Mock UDP package from the gaze-tracking program
 public class UDPSenderTester : MonoBehaviour
 {
 
     [SerializeField]
     float direction = 0.0f;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
 
     // Update is called once per frame
     void Update()
@@ -27,6 +20,8 @@ public class UDPSenderTester : MonoBehaviour
 
     void SendInfo()
     {
+        if (direction == 0) return;
+
         byte[] data = Encoding.ASCII.GetBytes(direction.ToString());
         string ipAddress = "127.0.0.1";
         int sendPort = 8051;
