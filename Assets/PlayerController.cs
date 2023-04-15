@@ -19,5 +19,9 @@ public class PlayerController : MonoBehaviour
     {
         float newDir = connectionsHandler.getLatestDirection();
         sc.SetDirection(newDir);
+        if (Input.GetKey("escape"))
+        {
+            Application.Quit();
+        }
     }
 }
