@@ -327,7 +327,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 370791066}
-  - component: {fileID: 370791065}
   - component: {fileID: 370791068}
   - component: {fileID: 370791069}
   m_Layer: 0
@@ -337,20 +336,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &370791065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 370791064}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc6df3e5ab3cd43d7a0763cc3cfafbc3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 388171586}
-  turnRate: 45
 --- !u!4 &370791066
 Transform:
   m_ObjectHideFlags: 0
@@ -379,8 +364,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   port: 8051
-  lastReceivedUDPPacket: 
-  allReceivedUDPPackets: 
   lastReceivedDirection: 0
 --- !u!114 &370791069
 MonoBehaviour:
@@ -391,10 +374,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 370791064}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f228387a6c5403da22e07b5dd6e444, type: 3}
+  m_Script: {fileID: 11500000, guid: a34c57eaa56a7474e9a427bbba5fa6fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 388171586}
 --- !u!1 &388171586
 GameObject:
   m_ObjectHideFlags: 0
@@ -408,7 +390,8 @@ GameObject:
   - component: {fileID: 388171589}
   - component: {fileID: 388171588}
   - component: {fileID: 388171587}
-  - component: {fileID: 388171592}
+  - component: {fileID: 388171593}
+  - component: {fileID: 388171594}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -511,7 +494,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!114 &388171592
+--- !u!114 &388171593
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -520,11 +503,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 388171586}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2bfae043b7b8437b83bc4f38905fb78, type: 3}
+  m_Script: {fileID: 11500000, guid: fc6df3e5ab3cd43d7a0763cc3cfafbc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 388171586}
+  turnRate: 25
+--- !u!114 &388171594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 388171586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3af012b0c836c9e4a8ca9549329fc82c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  connectionsHandler: {fileID: 370791068}
+  normalSpeed: 10
+  driftSpeed: 5
+  moveSpeed: 0
   direction: 0
-  moveSpeed: 4
+  useKeyboard: 1
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0

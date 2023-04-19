@@ -11,16 +11,10 @@ using System;
 public class ConnectionsHandler : MonoBehaviour
 {
     Thread receiveThread;
-
-    // udpclient object
     UdpClient client;
     IPEndPoint endpoint;
+    public int port = 8051;
 
-    public int port = 8051; // define > init
-
-    // infos
-    public string lastReceivedUDPPacket = "";
-    public string allReceivedUDPPackets = ""; // clean up this from time to time!
     public float lastReceivedDirection = 0.0f;
 
     private void Awake()
@@ -51,14 +45,11 @@ public class ConnectionsHandler : MonoBehaviour
                 string text = Encoding.UTF8.GetString(data);
                 Debug.Log(">> UDP listener received data: " + text);
 
-                // latest UDPpacket
-                lastReceivedUDPPacket = text;
                 float newDir;
                 if (float.TryParse(text, out newDir))
                 {
                     lastReceivedDirection = newDir;
                 }
-                allReceivedUDPPackets = allReceivedUDPPackets + text;
             }
             catch (Exception err)
             {
@@ -67,13 +58,6 @@ public class ConnectionsHandler : MonoBehaviour
         }
     }
 
-    // getLatestUDPPacket
-    // cleans up the rest
-    public string getLatestUDPPacket()
-    {
-        allReceivedUDPPackets = "";
-        return lastReceivedUDPPacket;
-    }
 
     public float getLatestDirection()
     {

@@ -1,41 +1,34 @@
 using UnityEngine;
 
+/// <summary>
+/// For mocking.
+/// </summary>
 public class KeyboardInputController : MonoBehaviour
 {
-    [SerializeField]
-    GameObject player;
-    SteeringController sc;
-    [SerializeField]
-    float turnRate = 45f;
-    float defaultMoveSpeed;
-    // Start is called before the first frame update
+    public GameObject player;
+    private EyeGazeController eyeGazeController;
+    public float turnRate = 25f;
+
     void Start()
     {
-        sc = player.GetComponent<SteeringController>();
-        defaultMoveSpeed = sc.moveSpeed;
+        eyeGazeController = player.GetComponent<EyeGazeController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        float newDir = 0f;
-        if (Input.GetKey("left"))
+        if (Input.GetKey(KeyCode.A))
         {
-            //newDir = Mathf.Clamp(newDir-turnRate, -45, 45);
-            newDir = -turnRate;
+            eyeGazeController.SetDirection(-turnRate);
+
         }
-        if (Input.GetKey("right"))
+        else if (Input.GetKey(KeyCode.D))
         {
-            newDir = turnRate;
-        }
-        if (Input.GetKey("up"))
-        {
-            sc.moveSpeed = defaultMoveSpeed * 2;
+            eyeGazeController.SetDirection(turnRate);
         }
         else
         {
-            sc.moveSpeed = defaultMoveSpeed;
+            eyeGazeController.SetDirection(0);
         }
-        sc.SetDirection(newDir);
     }
 }
