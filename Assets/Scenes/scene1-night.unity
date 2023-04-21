@@ -40034,10 +40034,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   connectionsHandler: {fileID: 1674793613}
-  maxSpeed: 80
+  maxSpeed: 40
   minSpeedBeforeDriftDecel: 12
-  accel: 2
-  driftDecel: 4
+  accel: 1
+  driftDecel: 1
   moveSpeed: 0
   direction: 0
   useKeyboard: 0
