@@ -12,9 +12,10 @@ public class EyeGazeController : MonoBehaviour
     [SerializeField] private float direction = 0.0f;
     public bool useKeyboard;
 
-
+    Vector3 startingPosition;
     void Start()
     {
+        startingPosition = transform.position;
     }
 
 
@@ -26,6 +27,10 @@ public class EyeGazeController : MonoBehaviour
         }
         transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
         transform.Rotate(0f, direction * Time.deltaTime, 0f, Space.Self);
+        if((transform.position - startingPosition).magnitude > 300)
+        {
+            transform.position = startingPosition;
+        }
     }
 
     //Sets direction of wheelchair, 0 would keep going forward, negative values turn left, pos turns right

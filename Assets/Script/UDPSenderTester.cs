@@ -16,6 +16,7 @@ public class UDPSenderTester : MonoBehaviour
     void Update()
     {
         SendInfo();
+
     }
 
     void SendInfo()
@@ -39,4 +40,5 @@ public class UDPSenderTester : MonoBehaviour
             Debug.Log(ex.ToString());
         }
     }
+    
 }

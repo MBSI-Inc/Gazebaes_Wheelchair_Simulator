@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1034484023}
-  m_IndirectSpecularColor: {r: 0.03614529, g: 0.050296597, b: 0.08971595, a: 1}
+  m_IndirectSpecularColor: {r: 0.036144946, g: 0.05029749, b: 0.08860371, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -40034,7 +40034,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   connectionsHandler: {fileID: 1674793613}
-  maxSpeed: 40
+  maxSpeed: 20
   minSpeedBeforeDriftDecel: 12
   accel: 1
   driftDecel: 1
@@ -46142,6 +46142,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   port: 8051
+  screenshotFetcher: {fileID: 0}
+  lastReceivedUDPPacket: 
+  allReceivedUDPPackets: 
   lastReceivedDirection: 0
 --- !u!4 &1674793614
 Transform:

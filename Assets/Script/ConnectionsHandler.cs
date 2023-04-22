@@ -9,10 +9,18 @@ using System;
 public class ConnectionsHandler : MonoBehaviour
 {
     Thread receiveThread;
+    Thread frameSenderThread;
+    // udpclient object
     UdpClient client;
     IPEndPoint endpoint;
-    public int port = 8051;
 
+    public int port = 8051; // define > init
+
+    [SerializeField]
+    ScreenshotFetcher screenshotFetcher;
+    // infos
+    public string lastReceivedUDPPacket = "";
+    public string allReceivedUDPPackets = ""; // clean up this from time to time!
     public float lastReceivedDirection = 0.0f;
 
     private void Awake()
@@ -30,6 +38,9 @@ public class ConnectionsHandler : MonoBehaviour
             new ThreadStart(ReceiveData));
         receiveThread.IsBackground = true;
         receiveThread.Start();
+        frameSenderThread = new Thread(()=>TCPServer.Connect(screenshotFetcher));
+        frameSenderThread.Start();
+
     }
 
     // receive thread
@@ -67,5 +78,7 @@ public class ConnectionsHandler : MonoBehaviour
         if (receiveThread != null)
             receiveThread.Abort();
         client.Close();
+        if (frameSenderThread != null)
+            frameSenderThread.Abort();
     }
 }

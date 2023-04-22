@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
             Application.Quit();
         }
 
+        if (speedText)
         speedText.text = $"{(controller.moveSpeed * 3):0} km/h";
     }
 }
