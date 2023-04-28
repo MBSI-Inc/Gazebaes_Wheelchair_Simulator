@@ -9,6 +9,7 @@ public class EyeGazeController : MonoBehaviour
     public float accel = 1f;
     public float driftDecel = 1f;
     public float moveSpeed = 0;
+    public bool isStopped = true;
     [SerializeField] private float direction = 0.0f;
     public bool useKeyboard;
 
@@ -21,9 +22,19 @@ public class EyeGazeController : MonoBehaviour
 
     void Update()
     {
+        // Now need to check if we are getting a direction input or a stop input
         if (!useKeyboard)
         {
-            SetDirection(connectionsHandler.getLatestDirection());
+            if (connectionsHandler.getDataTypeTracker() == 0.0f)
+            {
+                SetDirection(connectionsHandler.getLatestDirection());
+            }
+
+            else if (connectionsHandler.getDataTypeTracker() == 1.0f)
+            {
+                SetStopOrGo(connectionsHandler.getLatestMovingSignal());
+            }
+            
         }
         transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
         transform.Rotate(0f, direction * Time.deltaTime, 0f, Space.Self);
@@ -37,16 +48,29 @@ public class EyeGazeController : MonoBehaviour
     public void SetDirection(float newDir)
     {
         direction = newDir;
-        if (newDir == 0)
+        if (newDir == 0 && !isStopped)
         {
             moveSpeed += accel * Time.deltaTime;
             moveSpeed = Mathf.Clamp(moveSpeed, 0, maxSpeed);
         }
-        else
+        else if (!isStopped)
         {
             if (moveSpeed > minSpeedBeforeDriftDecel)
                 moveSpeed -= driftDecel * (moveSpeed / 10) * Time.deltaTime;
         }
+    }
+
+    // Sets the stop and go of the wheelchair, based on a 0/1 value
+    public void SetStopOrGo(float isMoving)
+    {
+        if (isMoving == 0.0f)
+        {
+            moveSpeed = 0;
+            isStopped = true;
+            return;
+        }
+
+        isStopped = false;
     }
 
 }
