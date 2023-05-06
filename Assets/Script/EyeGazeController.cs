@@ -3,50 +3,51 @@ using UnityEngine;
 public class EyeGazeController : MonoBehaviour
 {
     public ConnectionsHandler connectionsHandler;
-    public float maxSpeed = 24.0f;
-    // If move speed is lower than this, drift wont decel
-    public float minSpeedBeforeDriftDecel = 12f;
-    public float accel = 1f;
-    public float driftDecel = 1f;
     public float moveSpeed = 0;
+    private float currentSpeed = 0;
+    public bool stopMoving = false;
     [SerializeField] private float direction = 0.0f;
     public bool useKeyboard;
 
-    Vector3 startingPosition;
     void Start()
     {
-        startingPosition = transform.position;
-    }
 
+    }
 
     void Update()
     {
-        if (!useKeyboard)
+        if (!stopMoving)
         {
-            SetDirection(connectionsHandler.getLatestDirection());
+            if (!useKeyboard)
+            {
+                SetDirection(connectionsHandler.getLatestDirection());
+            }
+            transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
+            transform.Rotate(0f, direction * Time.deltaTime, 0f, Space.Self);
         }
-        transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
-        transform.Rotate(0f, direction * Time.deltaTime, 0f, Space.Self);
-        if((transform.position - startingPosition).magnitude > 300)
+
+        // In final version, we would use brain signal to start. For now let
+        // just use space.
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            transform.position = startingPosition;
+            stopMoving = !stopMoving;
         }
     }
 
     //Sets direction of wheelchair, 0 would keep going forward, negative values turn left, pos turns right
     public void SetDirection(float newDir)
     {
-        direction = newDir;
-        if (newDir == 0)
+        if (!stopMoving)
         {
-            moveSpeed += accel * Time.deltaTime;
-            moveSpeed = Mathf.Clamp(moveSpeed, 0, maxSpeed);
-        }
-        else
-        {
-            if (moveSpeed > minSpeedBeforeDriftDecel)
-                moveSpeed -= driftDecel * (moveSpeed / 10) * Time.deltaTime;
+            direction = newDir;
+            if (newDir == 0)
+            {
+                currentSpeed = moveSpeed;
+            }
+            else
+            {
+                currentSpeed = 0f;
+            }
         }
     }
-
 }

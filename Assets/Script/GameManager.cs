@@ -5,8 +5,6 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    public TextMeshProUGUI speedText;
-    public EyeGazeController controller;
 
     void Update()
     {
@@ -14,8 +12,5 @@ public class GameManager : MonoBehaviour
         {
             Application.Quit();
         }
-
-        if (speedText)
-        speedText.text = $"{(controller.moveSpeed * 3):0} km/h";
     }
 }
