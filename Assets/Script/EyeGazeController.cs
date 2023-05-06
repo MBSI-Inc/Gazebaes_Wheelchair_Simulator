@@ -23,8 +23,8 @@ public class EyeGazeController : MonoBehaviour
                 SetDirection(connectionsHandler.getLatestDirection());
             }
             transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
-            transform.Rotate(0f, direction * Time.deltaTime, 0f, Space.Self);
         }
+        transform.Rotate(0f, direction * Time.deltaTime, 0f, Space.Self);
 
         // In final version, we would use brain signal to start. For now let
         // just use space.
@@ -37,17 +37,14 @@ public class EyeGazeController : MonoBehaviour
     //Sets direction of wheelchair, 0 would keep going forward, negative values turn left, pos turns right
     public void SetDirection(float newDir)
     {
-        if (!stopMoving)
+        direction = newDir;
+        if (newDir == 0)
         {
-            direction = newDir;
-            if (newDir == 0)
-            {
-                currentSpeed = moveSpeed;
-            }
-            else
-            {
-                currentSpeed = 0f;
-            }
+            currentSpeed = moveSpeed;
+        }
+        else
+        {
+            currentSpeed = 0f;
         }
     }
 }
