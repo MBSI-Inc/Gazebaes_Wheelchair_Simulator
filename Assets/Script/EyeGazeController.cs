@@ -8,13 +8,9 @@ public class EyeGazeController : MonoBehaviour
     public bool stopMoving = false;
     [SerializeField] private float direction = 0.0f;
     public bool useKeyboard;
+    public Transform spawn;
 
-    void Start()
-    {
-
-    }
-
-    void Update()
+    private void Update()
     {
         if (!stopMoving)
         {
@@ -31,6 +27,12 @@ public class EyeGazeController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             stopMoving = !stopMoving;
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            transform.position = spawn.position;
+            transform.rotation = Quaternion.Euler(0, 90f, 0);
         }
     }
 

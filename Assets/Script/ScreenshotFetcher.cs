@@ -5,52 +5,52 @@ using UnityEngine;
 public class ScreenshotFetcher : MonoBehaviour
 {
     [SerializeField]
-    Camera cam;
+    private Camera cam;
 
-    bool frameRequestPresent = true;
-    byte[] frameByteArray;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private byte[] frameByteArray;
+    private Texture2D renderedTexture;
+    private RenderTexture screenTexture;
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            SaveCameraView(cam);
-        }
-        if (frameRequestPresent)
-        {
-            UpdateFrame();
-            frameRequestPresent = false;
-        }
-    }
-    void SaveCameraView(Camera cam)
-    {
-        
-        //System.IO.File.WriteAllBytes("/Users/joshuachung/Coding/MBSI/Temp" + "/cameracapture.png", byteArray);
-        //UDPSenderTester.SendScreenShot(byteArray);
+    //// Update is called once per frame
+    //private void Update()
+    //{
+    //    if (frameRequestPresent)
+    //    {
+    //        UpdateFrame();
+    //        frameRequestPresent = false;
+    //    }
+    //}
 
-    }
+    //public void UpdateFrameRequest()
+    //{
+    //    frameRequestPresent = true;
+    //}
 
-    public void UpdateFrameRequest()
+    //public void UpdateFrame()
+    //{
+    //    new WaitForEndOfFrame();
+    //    screenTexture = new RenderTexture(Screen.width, Screen.height, 16);
+    //    cam.targetTexture = screenTexture;
+    //    RenderTexture.active = screenTexture;
+    //    cam.Render();
+    //    renderedTexture = new Texture2D(Screen.width, Screen.height);
+    //    renderedTexture.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
+    //    RenderTexture.active = null;
+    //    frameByteArray = renderedTexture.EncodeToPNG();
+    //}
+
+    public IEnumerator UpdateFrameRequest()
     {
-        frameRequestPresent = true;
-    }
-    public void UpdateFrame()
-    {
-        new WaitForEndOfFrame();
-        RenderTexture screenTexture = new RenderTexture(Screen.width, Screen.height, 16);
+        yield return new WaitForEndOfFrame();
+        screenTexture = new RenderTexture(Screen.width, Screen.height, 16);
         cam.targetTexture = screenTexture;
         RenderTexture.active = screenTexture;
         cam.Render();
-        Texture2D renderedTexture = new Texture2D(Screen.width, Screen.height);
+        renderedTexture = new Texture2D(Screen.width, Screen.height);
         renderedTexture.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
         RenderTexture.active = null;
         frameByteArray = renderedTexture.EncodeToPNG();
+        yield return null;
     }
 
     public byte[] GetCameraViewByteArray()
@@ -58,6 +58,4 @@ public class ScreenshotFetcher : MonoBehaviour
         UpdateFrameRequest();
         return frameByteArray;
     }
-
 }
-
