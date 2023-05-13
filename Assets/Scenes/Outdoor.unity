@@ -13105,6 +13105,18 @@ PrefabInstance:
       propertyPath: spawn
       value: 
       objectReference: {fileID: 1108451217}
+    - target: {fileID: 3692867095241567535, guid: 0c4f1131b1244da43bb9b64181d3301a, type: 3}
+      propertyPath: stopMoving
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3692867095241567535, guid: 0c4f1131b1244da43bb9b64181d3301a, type: 3}
+      propertyPath: useKeyboard
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3692867095241567535, guid: 0c4f1131b1244da43bb9b64181d3301a, type: 3}
+      propertyPath: connectionsHandler
+      value: 
+      objectReference: {fileID: 1655652711}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0c4f1131b1244da43bb9b64181d3301a, type: 3}
 --- !u!20 &1332347514 stripped
@@ -16320,6 +16332,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1654629753}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1655652711 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7501761871678753101, guid: 50b17058338eb6644a645feabf7a190a, type: 3}
+  m_PrefabInstance: {fileID: 1640641937}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13afc3b221f474b428aa1dd01fa5873d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1656895363
 GameObject:
   m_ObjectHideFlags: 0

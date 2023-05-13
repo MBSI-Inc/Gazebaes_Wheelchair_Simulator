@@ -50,7 +50,7 @@ public class ConnectionsHandler : MonoBehaviour
     // receive thread
     private void ReceiveData()
     {
-        while (receiveThreadIsRunning)
+        while (true)
         {
             try
             {
@@ -74,7 +74,7 @@ public class ConnectionsHandler : MonoBehaviour
     // frameSender thread
     private void ConnectScreenshotFetcher()
     {
-        while (frameSenderThreadIsRunning)
+        while (true)
         {
             print("restarting server");
             TcpListener server = null;
@@ -95,7 +95,7 @@ public class ConnectionsHandler : MonoBehaviour
                 String data = null;
 
                 // Enter the listening loop.
-                while (frameSenderThreadIsRunning)
+                while (true)
                 {
                     print("Waiting for a connection... ");
 
