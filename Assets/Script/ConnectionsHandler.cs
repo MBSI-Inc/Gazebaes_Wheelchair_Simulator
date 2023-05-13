@@ -12,7 +12,6 @@ public class ConnectionsHandler : MonoBehaviour
     // udpclient object
     private UdpClient client;
     private IPEndPoint endpoint;
-    private ManualResetEvent stopEvent = new ManualResetEvent(false);
 
     public int port = 8051; // define > init
 
@@ -38,12 +37,12 @@ public class ConnectionsHandler : MonoBehaviour
     private void Start()
     {
         receiveThreadIsRunning = true;
-        receiveThread = new Thread(new ThreadStart(ReceiveData));
+        receiveThread = new Thread(ReceiveData);
         receiveThread.IsBackground = true;
         receiveThread.Start();
 
         frameSenderThreadIsRunning = true;
-        frameSenderThread = new Thread(new ThreadStart(ConnectScreenshotFetcher));
+        frameSenderThread = new Thread(ConnectScreenshotFetcher);
         frameSenderThread.IsBackground = true;
         frameSenderThread.Start();
     }
@@ -96,7 +95,7 @@ public class ConnectionsHandler : MonoBehaviour
                 String data = null;
 
                 // Enter the listening loop.
-                while (true)
+                while (frameSenderThreadIsRunning)
                 {
                     print("Waiting for a connection... ");
 
@@ -170,15 +169,16 @@ public class ConnectionsHandler : MonoBehaviour
         if (receiveThread != null)
         {
             receiveThreadIsRunning = false;
-            receiveThread.Join();
+            //receiveThread.Join();
+            receiveThread.Abort();
         }
         if (frameSenderThread != null)
         {
             frameSenderThreadIsRunning = false;
-            frameSenderThread.Join();
+            //frameSenderThread.Join();
+            frameSenderThread.Abort();
         }
 
-        stopEvent.Set();
         client.Close();
     }
 }
