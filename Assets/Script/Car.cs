@@ -3,15 +3,15 @@ using UnityEngine;
 public class Car : MonoBehaviour
 {
     public float moveSpeed;
-    public bool carInFront = false;
+    public bool stopMoving = false;
 
-    private float raycastDistance = 6f;
-    private Vector3 raycastBoxSize = new Vector3(2f, 0.5f, 2f);
+    private float raycastDistance = 5.5f;
+    private Vector3 raycastBoxSize = new Vector3(2f, 0.5f, 2.5f);
 
 
     void Update()
     {
-        carInFront = false;
+        stopMoving = false;
         RaycastHit hit;
 
         // if (Physics.Raycast(transform.position + transform.forward * 4f, transform.forward, out hit, 2f))
@@ -19,11 +19,15 @@ public class Car : MonoBehaviour
         {
             if (hit.collider.transform.parent && hit.collider.transform.parent.GetComponent<Car>())
             {
-                carInFront = true;
+                stopMoving = true;
+            }
+            else if (hit.collider.GetComponent<EyeGazeController>())
+            {
+                stopMoving = true;
             }
         }
 
-        if (!carInFront)
+        if (!stopMoving)
         {
             transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
         }
