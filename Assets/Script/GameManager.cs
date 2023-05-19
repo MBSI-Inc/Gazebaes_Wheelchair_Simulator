@@ -1,10 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance;
+    public GameObject finishText;
+
+
+    // Singleton pattern
+    void Awake()
+    {
+        if (!instance)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+    }
 
     void Update()
     {
@@ -13,4 +27,10 @@ public class GameManager : MonoBehaviour
             Application.Quit();
         }
     }
+
+    public void FinishSimulation()
+    {
+        finishText.SetActive(true);
+    }
+
 }
