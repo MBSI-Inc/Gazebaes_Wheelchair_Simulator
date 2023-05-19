@@ -15,6 +15,7 @@ public class ScreenshotFetcher : MonoBehaviour
 
     private void Update()
     {
+        UpdateFrame();
         if (frameRequestPresent)
         {
             UpdateFrame();
@@ -29,15 +30,35 @@ public class ScreenshotFetcher : MonoBehaviour
 
     public void UpdateFrame()
     {
-        new WaitForEndOfFrame();
-        screenTexture = new RenderTexture(Screen.width, Screen.height, 16);
-        cam.targetTexture = screenTexture;
-        RenderTexture.active = screenTexture;
+        //new WaitForEndOfFrame();
+        //screenTexture = new RenderTexture(Screen.width, Screen.height, 16);
+        //cam.targetTexture = screenTexture;
+        //RenderTexture.active = screenTexture;
+        //cam.Render();
+        //renderedTexture = new Texture2D(Screen.width, Screen.height);
+        //renderedTexture.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
+        //RenderTexture.active = null;
+        //frameByteArray = renderedTexture.EncodeToPNG();
+
+        // Create a RenderTexture with the same dimensions as the camera's viewport
+        RenderTexture renderTexture = new RenderTexture(cam.pixelWidth, cam.pixelHeight, 24);
+        cam.targetTexture = renderTexture;
         cam.Render();
-        renderedTexture = new Texture2D(Screen.width, Screen.height);
-        renderedTexture.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
+
+        // Set the active RenderTexture and read the pixels into a Texture2D
+        RenderTexture.active = renderTexture;
+        Texture2D screenshot = new Texture2D(cam.pixelWidth, cam.pixelHeight);
+        screenshot.ReadPixels(new Rect(0, 0, cam.pixelWidth, cam.pixelHeight), 0, 0);
+
+        // Encode the Texture2D as PNG and get the byte array
+        frameByteArray = screenshot.EncodeToPNG();
+
+        // Clean up and release resources
         RenderTexture.active = null;
-        frameByteArray = renderedTexture.EncodeToPNG();
+        cam.targetTexture = null;
+        Destroy(screenshot);
+        Destroy(renderTexture);
+
     }
 
     public byte[] GetCameraViewByteArray()
