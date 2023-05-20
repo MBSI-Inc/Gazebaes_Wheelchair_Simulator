@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     public void FinishSimulation()
     {
         finishText.SetActive(true);
+        Debug.Log("Obstacles bumped " + GameObject.Find("Player").GetComponent<EyeGazeController>().obstacleBumpCount);
     }
 
 }

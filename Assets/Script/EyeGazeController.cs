@@ -9,6 +9,7 @@ public class EyeGazeController : MonoBehaviour
     [SerializeField] private float direction = 0.0f;
     public bool useKeyboard;
     public Transform spawn;
+    public int obstacleBumpCount = 0;
 
     private void Update()
     {
@@ -20,6 +21,10 @@ public class EyeGazeController : MonoBehaviour
                 SetDirection(connectionsHandler.getLatestDirection());
                 transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
             }
+        }
+        else
+        {
+            transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
         }
         transform.Rotate(0f, direction * Time.deltaTime, 0f, Space.Self);
 
@@ -51,4 +56,12 @@ public class EyeGazeController : MonoBehaviour
         }
     }
 
+    void OnCollisionEnter(Collision col)
+    {
+        if (col.collider.gameObject.layer == 6)
+        {
+            obstacleBumpCount += 1;
+
+        }
+    }
 }
