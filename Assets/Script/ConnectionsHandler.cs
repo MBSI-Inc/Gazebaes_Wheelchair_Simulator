@@ -12,7 +12,7 @@ public class ConnectionsHandler : MonoBehaviour
     // udpclient object
     private UdpClient client;
     private IPEndPoint endpoint;
-
+    private bool stopMoving = true;
     public int port = 8051; // define > init
 
     [SerializeField]
@@ -50,6 +50,8 @@ public class ConnectionsHandler : MonoBehaviour
     // receive thread
     private void ReceiveData()
     {
+        var timer = new System.Diagnostics.Stopwatch();
+        timer.Start();
         while (true)
         {
             try
@@ -57,12 +59,27 @@ public class ConnectionsHandler : MonoBehaviour
                 byte[] data = client.Receive(ref endpoint);
                 string text = Encoding.UTF8.GetString(data);
                 Debug.Log(">> UDP listener received data: " + text);
-
-                float newDir;
-                if (float.TryParse(text, out newDir))
+                String command = text.Split(" ")[0];
+                String value = text.Split(" ")[1];
+                if (command.Equals("c"))
                 {
-                    lastReceivedDirection = newDir;
+                    if (value.Equals("move"))
+                    {
+                        if((timer.ElapsedMilliseconds> 125))
+                        {
+                            stopMoving = !stopMoving;
+                            timer.Restart();
+                        }
+                    }
                 }
+                else if (command.Equals("d"))
+                {
+                    float newDir;
+                    if (float.TryParse(value, out newDir))
+                    {
+                        lastReceivedDirection = newDir;
+                    }
+                }               
             }
             catch (Exception err)
             {
@@ -164,6 +181,11 @@ public class ConnectionsHandler : MonoBehaviour
     public float getLatestDirection()
     {
         return lastReceivedDirection;
+    }
+
+    public bool getLatestMovement()
+    {
+        return stopMoving;
     }
 
     private void OnDisable()

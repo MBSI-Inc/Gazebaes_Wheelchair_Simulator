@@ -12,13 +12,14 @@ public class EyeGazeController : MonoBehaviour
 
     private void Update()
     {
-        if (!stopMoving)
+        if (!useKeyboard)
         {
-            if (!useKeyboard)
+            stopMoving = connectionsHandler.getLatestMovement();
+            if (!stopMoving)
             {
                 SetDirection(connectionsHandler.getLatestDirection());
+                transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
             }
-            transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
         }
         transform.Rotate(0f, direction * Time.deltaTime, 0f, Space.Self);
 
@@ -46,7 +47,8 @@ public class EyeGazeController : MonoBehaviour
         }
         else
         {
-            currentSpeed = 0f;
+            currentSpeed = moveSpeed/2f;
         }
     }
+
 }

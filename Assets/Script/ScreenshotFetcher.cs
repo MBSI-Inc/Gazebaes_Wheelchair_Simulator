@@ -30,16 +30,6 @@ public class ScreenshotFetcher : MonoBehaviour
 
     public void UpdateFrame()
     {
-        //new WaitForEndOfFrame();
-        //screenTexture = new RenderTexture(Screen.width, Screen.height, 16);
-        //cam.targetTexture = screenTexture;
-        //RenderTexture.active = screenTexture;
-        //cam.Render();
-        //renderedTexture = new Texture2D(Screen.width, Screen.height);
-        //renderedTexture.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
-        //RenderTexture.active = null;
-        //frameByteArray = renderedTexture.EncodeToPNG();
-
         // Create a RenderTexture with the same dimensions as the camera's viewport
         RenderTexture renderTexture = new RenderTexture(cam.pixelWidth, cam.pixelHeight, 24);
         cam.targetTexture = renderTexture;
