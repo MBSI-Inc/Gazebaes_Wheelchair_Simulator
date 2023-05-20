@@ -17543,7 +17543,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3692867095241567535, guid: 0c4f1131b1244da43bb9b64181d3301a, type: 3}
       propertyPath: useKeyboard
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3692867095241567535, guid: 0c4f1131b1244da43bb9b64181d3301a, type: 3}
       propertyPath: connectionsHandler

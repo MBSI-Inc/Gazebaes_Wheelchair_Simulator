@@ -52,7 +52,7 @@ public class EyeGazeController : MonoBehaviour
         }
         else
         {
-            currentSpeed = moveSpeed/2f;
+            currentSpeed = 0.0f;
         }
     }
 
