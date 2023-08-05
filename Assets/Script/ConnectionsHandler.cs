@@ -13,7 +13,8 @@ public class ConnectionsHandler : MonoBehaviour
     private UdpClient client;
     private IPEndPoint endpoint;
     private bool stopMoving = true;
-    public int port = 8051; // define > init
+    static int port_server = 8052;
+    public int port_udp_listenCommand = 8051; // define > init
 
     [SerializeField]
     private ScreenshotFetcher screenshotFetcher;
@@ -28,9 +29,8 @@ public class ConnectionsHandler : MonoBehaviour
     private void Awake()
     {
         // status
-        print("Sending to 127.0.0.1 : " + port);
-        print("Test-Sending to this Port: nc -u 127.0.0.1  " + port + "");
-        client = new UdpClient(port);
+        print("Listening for movement command on to 127.0.0.1 : " + port_udp_listenCommand);
+        client = new UdpClient(port_udp_listenCommand);
         endpoint = new IPEndPoint(IPAddress.Any, 0);
     }
 
@@ -97,12 +97,10 @@ public class ConnectionsHandler : MonoBehaviour
             TcpListener server = null;
             try
             {
-                // Set the TcpListener on port 13000.
-                Int32 port = 8052;
+
                 IPAddress localAddr = IPAddress.Parse("127.0.0.1");
 
-                // TcpListener server = new TcpListener(port);
-                server = new TcpListener(localAddr, port);
+                server = new TcpListener(localAddr, port_server);
 
                 // Start listening for client requests.
                 server.Start();

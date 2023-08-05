@@ -17539,7 +17539,7 @@ PrefabInstance:
       objectReference: {fileID: 1108451217}
     - target: {fileID: 3692867095241567535, guid: 0c4f1131b1244da43bb9b64181d3301a, type: 3}
       propertyPath: stopMoving
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3692867095241567535, guid: 0c4f1131b1244da43bb9b64181d3301a, type: 3}
       propertyPath: useKeyboard
@@ -21903,6 +21903,10 @@ PrefabInstance:
       propertyPath: finishText
       value: 
       objectReference: {fileID: 1237184239}
+    - target: {fileID: 7501761871678753101, guid: 50b17058338eb6644a645feabf7a190a, type: 3}
+      propertyPath: port
+      value: 8052
+      objectReference: {fileID: 0}
     - target: {fileID: 7501761871678753101, guid: 50b17058338eb6644a645feabf7a190a, type: 3}
       propertyPath: m_Enabled
       value: 1
