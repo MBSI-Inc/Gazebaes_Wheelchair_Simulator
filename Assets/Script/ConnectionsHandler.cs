@@ -12,7 +12,7 @@ public class ConnectionsHandler : MonoBehaviour
     // udpclient object
     private UdpClient client;
     private IPEndPoint endpoint;
-    private bool stopMoving = true;
+    public bool isMoving = false;
     static int port_server = 8052;
     public int port_udp_listenCommand = 8051; // define > init
 
@@ -21,7 +21,9 @@ public class ConnectionsHandler : MonoBehaviour
 
     public string lastReceivedUDPPacket = "";
     public string allReceivedUDPPackets = ""; // clean up this from time to time!
-    public float lastReceivedDirection = 0.0f;
+    private float targetTurnRate = 0.0f;
+    private float targetSpeed = 10.0f;
+
 
     private bool receiveThreadIsRunning = false;
     private bool frameSenderThreadIsRunning = false;
@@ -54,6 +56,7 @@ public class ConnectionsHandler : MonoBehaviour
         timer.Start();
         while (true)
         {
+            
             try
             {
                 byte[] data = client.Receive(ref endpoint);
@@ -67,18 +70,23 @@ public class ConnectionsHandler : MonoBehaviour
                     {
                         if((timer.ElapsedMilliseconds> 125))
                         {
-                            stopMoving = !stopMoving;
+                            isMoving = !isMoving;
                             timer.Restart();
                         }
                     }
                 }
                 else if (command.Equals("d"))
                 {
-                    float newDir;
-                    if (float.TryParse(value, out newDir))
+                    //Value should be in the format of [speed,turnrate]
+                    String[] values = value.Substring(1, value.Length - 2).Split(",");
+                    float _targetSpeed, _targetTurnRate;
+                    if (float.TryParse(values[0], out _targetSpeed) && float.TryParse(values[1], out _targetTurnRate))
                     {
-                        lastReceivedDirection = newDir;
+                        targetTurnRate = _targetTurnRate;
+                        targetSpeed = _targetSpeed;
                     }
+                    
+
                 }               
             }
             catch (Exception err)
@@ -178,12 +186,17 @@ public class ConnectionsHandler : MonoBehaviour
 
     public float getLatestDirection()
     {
-        return lastReceivedDirection;
+        return targetTurnRate;
+    }
+
+    public float getLatestTargetSpeed()
+    {
+        return targetSpeed;
     }
 
     public bool getLatestMovement()
     {
-        return stopMoving;
+        return isMoving;
     }
 
     private void OnDisable()

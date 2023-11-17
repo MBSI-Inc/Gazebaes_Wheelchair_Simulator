@@ -17538,8 +17538,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1108451217}
     - target: {fileID: 3692867095241567535, guid: 0c4f1131b1244da43bb9b64181d3301a, type: 3}
+      propertyPath: isMoving
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3692867095241567535, guid: 0c4f1131b1244da43bb9b64181d3301a, type: 3}
       propertyPath: stopMoving
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3692867095241567535, guid: 0c4f1131b1244da43bb9b64181d3301a, type: 3}
+      propertyPath: targetSpeed
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3692867095241567535, guid: 0c4f1131b1244da43bb9b64181d3301a, type: 3}
       propertyPath: useKeyboard
@@ -24775,7 +24783,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: '''R'' - Reset back to spawn
 
-    ''Space'' - Stop/Start wheelchair'
+    ''Space/M'' - Stop/Start wheelchair'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

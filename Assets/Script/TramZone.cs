@@ -7,7 +7,7 @@ public class TramZone : MonoBehaviour
         EyeGazeController player = other.gameObject.GetComponent<EyeGazeController>();
         if (player)
         {
-            player.stopMoving = true;
+            player.isMoving = false;
             GameManager.instance.FinishSimulation();
         }
     }

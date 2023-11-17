@@ -3,9 +3,9 @@ using UnityEngine;
 public class EyeGazeController : MonoBehaviour
 {
     public ConnectionsHandler connectionsHandler;
-    public float moveSpeed = 0;
+    public float targetSpeed = 10F;
     private float currentSpeed = 0;
-    public bool stopMoving = false;
+    public bool isMoving = false;
     [SerializeField] private float direction = 0.0f;
     public bool useKeyboard;
     public Transform spawn;
@@ -15,10 +15,11 @@ public class EyeGazeController : MonoBehaviour
     {
         if (!useKeyboard)
         {
-            stopMoving = connectionsHandler.getLatestMovement();
-            if (!stopMoving)
+            isMoving = connectionsHandler.getLatestMovement();
+            if (isMoving)
             {
                 SetDirection(connectionsHandler.getLatestDirection());
+                SetTargetSpeed(connectionsHandler.getLatestTargetSpeed());
                 transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
             }
         }
@@ -32,7 +33,16 @@ public class EyeGazeController : MonoBehaviour
         // just use space.
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            stopMoving = !stopMoving;
+            print("Space bar pressed");
+            isMoving = !isMoving;
+            if (isMoving)
+            {
+                currentSpeed = targetSpeed;
+            }
+            else
+            {
+                currentSpeed = 0f;
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -40,6 +50,12 @@ public class EyeGazeController : MonoBehaviour
             transform.position = spawn.position;
             transform.rotation = Quaternion.Euler(0, 90f, 0);
         }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+
+            connectionsHandler.isMoving= !connectionsHandler.isMoving;
+        }
+
     }
 
     //Sets direction of wheelchair, 0 would keep going forward, negative values turn left, pos turns right
@@ -48,12 +64,16 @@ public class EyeGazeController : MonoBehaviour
         direction = newDir;
         if (newDir == 0)
         {
-            currentSpeed = moveSpeed;
+            currentSpeed = targetSpeed;
         }
         else
         {
             currentSpeed = 0.0f;
         }
+    }
+    public void SetTargetSpeed(float _targetSpeed)
+    {
+        targetSpeed = _targetSpeed;
     }
 
     void OnCollisionEnter(Collision col)
