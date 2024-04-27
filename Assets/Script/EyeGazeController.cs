@@ -10,6 +10,7 @@ public class EyeGazeController : MonoBehaviour
     public bool useKeyboard;
     public Transform spawn;
     public int obstacleBumpCount = 0;
+    [SerializeField] private bool stopWhenTurning;
 
     private void Update()
     {
@@ -62,14 +63,15 @@ public class EyeGazeController : MonoBehaviour
     public void SetDirection(float newDir)
     {
         direction = newDir;
-        if (newDir == 0)
+        currentSpeed = targetSpeed;
+        if (stopWhenTurning)
         {
-            currentSpeed = targetSpeed;
+            if (newDir != 0)
+            {
+                currentSpeed = 0f;
+            }
         }
-        else
-        {
-            currentSpeed = 0.0f;
-        }
+
     }
     public void SetTargetSpeed(float _targetSpeed)
     {

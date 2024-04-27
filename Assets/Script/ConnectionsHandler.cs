@@ -152,7 +152,7 @@ public class ConnectionsHandler : MonoBehaviour
                         // Send back a response.
                         stream.Write(msg, 0, msg.Length);
                         
-                        print(String.Format("Sent byte array of length: {0}", msg.Length));
+                        //print(String.Format("Sent byte array of length: {0}", msg.Length));
                         
                         //Console.WriteLine("Sent: {0}", data);
                     }
