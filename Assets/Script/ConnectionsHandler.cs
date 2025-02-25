@@ -23,7 +23,7 @@ public class ConnectionsHandler : MonoBehaviour
     public string allReceivedUDPPackets = ""; // clean up this from time to time!
     private float targetTurnRate = 0.0f;
     private float targetSpeed = 10.0f;
-
+    public bool[] userInputTrigger;
 
     private bool receiveThreadIsRunning = false;
     private bool frameSenderThreadIsRunning = false;
@@ -47,6 +47,7 @@ public class ConnectionsHandler : MonoBehaviour
         frameSenderThread = new Thread(ConnectScreenshotFetcher);
         frameSenderThread.IsBackground = true;
         frameSenderThread.Start();
+        userInputTrigger = new bool[5];
     }
 
     // receive thread
@@ -74,6 +75,12 @@ public class ConnectionsHandler : MonoBehaviour
                             timer.Restart();
                         }
                     }
+
+                    if (value.Equals("input_0"))
+                    {
+                        userInputTrigger[0] = true;
+                    }
+
                 }
                 else if (command.Equals("d"))
                 {
@@ -197,6 +204,18 @@ public class ConnectionsHandler : MonoBehaviour
     public bool getLatestMovement()
     {
         return isMoving;
+    }
+    public bool getInputTrigger(int i = 0)
+    {
+        if (userInputTrigger[i])
+        {
+            userInputTrigger[i] = false;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     private void OnDisable()
