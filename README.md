@@ -1,9 +1,9 @@
 # WheelchairSimulator
-##Executable file 
+## Executable file 
 Executable file can be found and downloaded here: https://drive.google.com/drive/folders/1KLMvJFP-mzzT8wL02fonObV2RuAe1vs8?usp=drive_link
 Use your MBSI account to access
 
-##Installation
+## Installation
 Install unity if you want to make any changes/edits to the simulator
 1. Install Unity Hub and Unity Editor (version 2022.3.14f1)
 2. Clone this repository to your computer
