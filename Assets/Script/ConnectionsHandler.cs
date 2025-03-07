@@ -7,14 +7,17 @@ using System;
 
 public class ConnectionsHandler : MonoBehaviour
 {
-    private Thread receiveThread;
+    private Thread gazeReceiveThread;
     private Thread frameSenderThread;
     // udpclient object
-    private UdpClient client;
+    private UdpClient gazeClient;
+    private UdpClient brainClient;
+
     private IPEndPoint endpoint;
     public bool isMoving = false;
-    static int port_server = 8052;
-    public int port_udp_listenCommand = 8051; // define > init
+    public int brainCommandPort = 8053;
+    public int framePort = 8052;
+    public int gazeTrackCommandPort = 8051; // define > init
 
     [SerializeField]
     private ScreenshotFetcher screenshotFetcher;
@@ -25,23 +28,24 @@ public class ConnectionsHandler : MonoBehaviour
     private float targetSpeed = 10.0f;
     public bool[] userInputTrigger;
 
-    private bool receiveThreadIsRunning = false;
+    private bool gazeReceiveThreadIsRunning = false;
     private bool frameSenderThreadIsRunning = false;
 
     private void Awake()
     {
         // status
-        print("Listening for movement command on to 127.0.0.1 : " + port_udp_listenCommand);
-        client = new UdpClient(port_udp_listenCommand);
+        print("Listening for movement command on to 127.0.0.1 : " + gazeTrackCommandPort);
+        gazeClient = new UdpClient(gazeTrackCommandPort);
+        brainClient = new UdpClient(brainCommandPort);
         endpoint = new IPEndPoint(IPAddress.Any, 0);
     }
 
     private void Start()
     {
-        receiveThreadIsRunning = true;
-        receiveThread = new Thread(ReceiveData);
-        receiveThread.IsBackground = true;
-        receiveThread.Start();
+        gazeReceiveThreadIsRunning = true;
+        gazeReceiveThread = new Thread(ReceiveData);
+        gazeReceiveThread.IsBackground = true;
+        gazeReceiveThread.Start();
 
         frameSenderThreadIsRunning = true;
         frameSenderThread = new Thread(ConnectScreenshotFetcher);
@@ -57,10 +61,10 @@ public class ConnectionsHandler : MonoBehaviour
         timer.Start();
         while (true)
         {
-            
+
             try
             {
-                byte[] data = client.Receive(ref endpoint);
+                byte[] data = gazeClient.Receive(ref endpoint);
                 string text = Encoding.UTF8.GetString(data);
                 Debug.Log(">> UDP listener received data: " + text);
                 String command = text.Split(" ")[0];
@@ -69,7 +73,7 @@ public class ConnectionsHandler : MonoBehaviour
                 {
                     if (value.Equals("move"))
                     {
-                        if((timer.ElapsedMilliseconds> 125))
+                        if ((timer.ElapsedMilliseconds > 125))
                         {
                             isMoving = !isMoving;
                             timer.Restart();
@@ -80,7 +84,6 @@ public class ConnectionsHandler : MonoBehaviour
                     {
                         userInputTrigger[0] = true;
                     }
-
                 }
                 else if (command.Equals("d"))
                 {
@@ -92,9 +95,7 @@ public class ConnectionsHandler : MonoBehaviour
                         targetTurnRate = _targetTurnRate;
                         targetSpeed = _targetSpeed;
                     }
-                    
-
-                }               
+                }
             }
             catch (Exception err)
             {
@@ -115,7 +116,7 @@ public class ConnectionsHandler : MonoBehaviour
 
                 IPAddress localAddr = IPAddress.Parse("127.0.0.1");
 
-                server = new TcpListener(localAddr, port_server);
+                server = new TcpListener(localAddr, framePort);
 
                 // Start listening for client requests.
                 server.Start();
@@ -158,9 +159,9 @@ public class ConnectionsHandler : MonoBehaviour
                         byte[] msg = Combine(lengthHeader, frameBytes);
                         // Send back a response.
                         stream.Write(msg, 0, msg.Length);
-                        
+
                         //print(String.Format("Sent byte array of length: {0}", msg.Length));
-                        
+
                         //Console.WriteLine("Sent: {0}", data);
                     }
 
@@ -220,11 +221,11 @@ public class ConnectionsHandler : MonoBehaviour
 
     private void OnDisable()
     {
-        if (receiveThread != null)
+        if (gazeReceiveThread != null)
         {
-            receiveThreadIsRunning = false;
-            //receiveThread.Join();
-            receiveThread.Abort();
+            gazeReceiveThreadIsRunning = false;
+            //gazeReceiveThread.Join();
+            gazeReceiveThread.Abort();
         }
         if (frameSenderThread != null)
         {
@@ -233,6 +234,6 @@ public class ConnectionsHandler : MonoBehaviour
             frameSenderThread.Abort();
         }
 
-        client.Close();
+        gazeClient.Close();
     }
 }
