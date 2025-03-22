@@ -20,6 +20,9 @@ public class ConnectionsHandler : MonoBehaviour
     public int gazeTrackCommandPort = 8051; // define > init
 
     [SerializeField]
+    private bool useGazeTrackCommandport = true;
+
+    [SerializeField]
     private ScreenshotFetcher screenshotFetcher;
 
     public string lastReceivedUDPPacket = "";
@@ -235,5 +238,11 @@ public class ConnectionsHandler : MonoBehaviour
         }
 
         gazeClient.Close();
+    }
+
+    // Switch between gaze controls and eeg controls
+    public void setUseGazeTrackCommandport(bool status)
+    {
+        useGazeTrackCommandport = status;
     }
 }
