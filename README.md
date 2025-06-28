@@ -4,10 +4,10 @@ Executable file can be found and downloaded here: https://drive.google.com/drive
 Use your MBSI account to access
 
 ## Installation
-Install unity if you want to make any changes/edits to the simulator
-1. Install Unity Hub and Unity Editor (version 2022.3.14f1)
-2. Clone this repository to your computer
-3. Open this project in unity editor
+Install unity if you want to make any changes/edits to the simulator.
+1. Install Unity Hub, then use Unity Hub to install Unity Editor (version 2022.3.14f1).
+2. Clone this repository to your computer.
+3. Import this project to Unity Hub and open it in Unity Editor. Note: Use the correct Unity Editor version.
 4. Run the game, this opens up a TCP server to stream the game's video to the python-end; the unity-end also has a UDP listener that listens for movement commands from the python-end.
 
 
