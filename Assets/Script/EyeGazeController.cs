@@ -10,6 +10,10 @@ public class EyeGazeController : MonoBehaviour
     public bool useKeyboard;
     public Transform spawn;
     public int obstacleBumpCount = 0;
+    [SerializeField]
+    private float playerLinearSpeedMultiplier = 1.0f;
+    [SerializeField]
+    private float playerTurnRateMultiplier = 1.0f;
     [SerializeField] private bool stopWhenTurning;
 
     private void Update()
@@ -21,14 +25,14 @@ public class EyeGazeController : MonoBehaviour
             {
                 SetDirection(connectionsHandler.getLatestDirection());
                 SetTargetSpeed(connectionsHandler.getLatestTargetSpeed());
-                transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
+                transform.Translate(Vector3.forward * currentSpeed * playerLinearSpeedMultiplier/5f * Time.deltaTime);
             }
         }
         else
         {
-            transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
+            transform.Translate(Vector3.forward * currentSpeed * playerLinearSpeedMultiplier * Time.deltaTime);
         }
-        transform.Rotate(0f, direction * Time.deltaTime, 0f, Space.Self);
+        transform.Rotate(0f, direction * Time.deltaTime * playerTurnRateMultiplier /5f, 0f, Space.Self);
 
         // In final version, we would use brain signal to start. For now let
         // just use space.
@@ -85,5 +89,15 @@ public class EyeGazeController : MonoBehaviour
             obstacleBumpCount += 1;
 
         }
+    }
+    public void ChangeLinearSpeedMultiplier(System.Single newValue)
+    {
+        this.playerLinearSpeedMultiplier = Mathf.Pow(10, (float)newValue);
+        print("changed linear speed multiplier to " + this.playerLinearSpeedMultiplier);
+    }
+    public void ChangeTurnRateMultiplier(System.Single newValue)
+    {
+        this.playerTurnRateMultiplier = Mathf.Pow(10, (float)newValue);
+        print("changed turn rate multiplier to " + this.playerTurnRateMultiplier);
     }
 }
