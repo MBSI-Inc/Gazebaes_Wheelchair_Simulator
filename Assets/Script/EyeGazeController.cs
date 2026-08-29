@@ -82,6 +82,21 @@ public class EyeGazeController : MonoBehaviour
         targetSpeed = _targetSpeed;
     }
 
+    // ── WebGL bridge: SendMessage("Player", "ReceiveMoveCommand", ...) ──
+    public void ReceiveMoveCommand(string command)
+    {
+        if (command == "move")
+        {
+            // Same lever as the M key (line 61)
+            connectionsHandler.isMoving = !connectionsHandler.isMoving;
+        }
+        else if (command == "restart")
+        {
+            // Same as the R key (lines 55-56)
+            transform.position = spawn.position;
+            transform.rotation = Quaternion.Euler(0, 90f, 0);
+        }
+    }
     void OnCollisionEnter(Collision col)
     {
         if (col.collider.gameObject.layer == 6)

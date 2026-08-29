@@ -1,12 +1,16 @@
 using UnityEngine;
+using System;
+
+#if !UNITY_WEBGL || UNITY_EDITOR
 using System.Net.Sockets;
 using System.Net;
 using System.Text;
 using System.Threading;
-using System;
+#endif
 
 public class ConnectionsHandler : MonoBehaviour
 {
+#if !UNITY_WEBGL || UNITY_EDITOR
     private Thread gazeReceiveThread;
     private Thread frameSenderThread;
     // udpclient object
@@ -14,6 +18,8 @@ public class ConnectionsHandler : MonoBehaviour
     private UdpClient brainClient;
 
     private IPEndPoint endpoint;
+#endif
+
     public bool isMoving = false;
     public int brainCommandPort = 8053;
     public int framePort = 8052;
@@ -33,15 +39,20 @@ public class ConnectionsHandler : MonoBehaviour
 
     private void Awake()
     {
+#if !UNITY_WEBGL || UNITY_EDITOR
         // status
         print("Listening for movement command on to 127.0.0.1 : " + gazeTrackCommandPort);
         gazeClient = new UdpClient(gazeTrackCommandPort);
         brainClient = new UdpClient(brainCommandPort);
         endpoint = new IPEndPoint(IPAddress.Any, 0);
+#endif
     }
 
     private void Start()
     {
+        userInputTrigger = new bool[5];
+
+#if !UNITY_WEBGL || UNITY_EDITOR
         gazeReceiveThreadIsRunning = true;
         gazeReceiveThread = new Thread(ReceiveData);
         gazeReceiveThread.IsBackground = true;
@@ -51,9 +62,29 @@ public class ConnectionsHandler : MonoBehaviour
         frameSenderThread = new Thread(ConnectScreenshotFetcher);
         frameSenderThread.IsBackground = true;
         frameSenderThread.Start();
-        userInputTrigger = new bool[5];
+#endif
     }
 
+    // ── WebGL bridge ─────────────────────────────────────────────────────────
+    // Driven by unityInstance.SendMessage(...) from the dashboard page.
+    // Replaces the UDP transport, which the browser sandbox cannot provide.
+
+    public void ReceiveGazeData(string csv)
+    {
+        // Payload is bare "speed,turnRate" — no surrounding brackets.
+        string[] v = csv.Split(',');
+        if (v.Length == 2
+            && float.TryParse(v[0], out float speed)
+            && float.TryParse(v[1], out float turnRate))
+        {
+            targetSpeed = speed;
+            targetTurnRate = turnRate;
+        }
+    }
+
+
+
+#if !UNITY_WEBGL || UNITY_EDITOR
     // receive thread
     private void ReceiveData()
     {
@@ -191,6 +222,7 @@ public class ConnectionsHandler : MonoBehaviour
         Buffer.BlockCopy(second, 0, bytes, first.Length, second.Length);
         return bytes;
     }
+#endif
 
     public float getLatestDirection()
     {
@@ -206,6 +238,7 @@ public class ConnectionsHandler : MonoBehaviour
     {
         return isMoving;
     }
+
     public bool getInputTrigger(int i = 0)
     {
         if (userInputTrigger[i])
@@ -221,6 +254,7 @@ public class ConnectionsHandler : MonoBehaviour
 
     private void OnDisable()
     {
+#if !UNITY_WEBGL || UNITY_EDITOR
         if (gazeReceiveThread != null)
         {
             gazeReceiveThreadIsRunning = false;
@@ -230,10 +264,12 @@ public class ConnectionsHandler : MonoBehaviour
         if (frameSenderThread != null)
         {
             frameSenderThreadIsRunning = false;
-            //frameSenderThread.Join();
+            //frameSenderThread.Abort();
             frameSenderThread.Abort();
         }
 
-        gazeClient.Close();
+        if (gazeClient != null) gazeClient.Close();
+        if (brainClient != null) brainClient.Close();
+#endif
     }
 }
